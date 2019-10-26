@@ -133,13 +133,19 @@ class SmartPlugPowerMonitor {
           this.lastEndTime = now;
           //reset start time
           this.overWattsThresholdStartTime = null;
+
+          // reset the switch
+          console.log("shutting off switch for " + this.config.minRuntimeForCooldownSeconds + " seconds");
+          this.smartPlug.setPowerState(0)
+          // setTimeout( () => {this.smartPlug.setPowerState(1); console.log("turning on switch..."); }, 60*1000);
+          
         }
 
       }
 
       if(this.lastEndTime == now && runtime > this.config.minRuntimeForCooldownSeconds){
         //if appliance running just ended, poll wattage after cooldown period
-        setTimeout(()=>{this.poll()}, this.config.cooldownPeriodSeconds*1000);
+        setTimeout(()=>{console.log("turning on switch..."); this.smartPlug.setPowerState(1); this.poll()},  this.config.cooldownPeriodSeconds*1000);
       }else{
         //otherwise poll at usual polling interval
         setTimeout(()=>{this.poll()}, this.config.pollIntervalSeconds*1000);
