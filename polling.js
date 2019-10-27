@@ -5,7 +5,6 @@ var prev_date = new Date(2000, 1, 1, 0, 0, 0);
 var smartPlugPowerMonitor = new SmartPlugPowerMonitor({
   // smartPlugIP: "192.168.1.136", // miner downstairs
   smartPlugIP: "192.168.1.149", // desktop
-  //iftttMakerChannelKey: "4Ce6RTkT0O_J8Gu7QQgxK",
   iftttMakerChannelKey: "<asdfasdfasdf>",
   pollIntervalSeconds: 1,
   startTimeWindowSeconds: 3,
