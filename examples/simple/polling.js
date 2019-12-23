@@ -3,7 +3,7 @@ const fs = require('fs');
 var prev_date = new Date(2000, 1, 1, 0, 0, 0);
 
 var smartPlugPowerMonitor = new SmartPlugPowerMonitor({
-  // smartPlugIP: "192.168.1.136", // miner downstairs
+  //smartPlugIP: "192.168.1.136", // miner downstairs
   smartPlugIP: "192.168.1.149", // desktop
   iftttMakerChannelKey: "<asdfasdfasdf>",
   pollIntervalSeconds: 1,
@@ -29,7 +29,7 @@ function check_new_day(usage) {
 
 function write_log(usage) {
 
-  fs.appendFile('power_usage.txt', curr_date.toLocaleString() + '|' + usage.power + '\n', (err) => {
+  fs.appendFile('power_usage.txt', curr_date.toLocaleString() + ' | ' + usage.power + '\n', (err) => {
     if (err) throw err;
     console.log('updated usage log');
   });
@@ -43,7 +43,10 @@ function pollingData(usage){
   if (check_new_day(usage)) {
     write_log(usage);
   }
-  console.log(curr_date.toLocaleString() + "|" + usage.power);
+  console.log(curr_date.toLocaleString() + " | " + usage.power);
+  var spawn = require("child_process").spawn;
+
+  var process = spawn('python',["/home/pi/unicorn-hat/examples/equalizer.py", usage.power]);
 }
 
 function eventData(event, data){
