@@ -46,7 +46,7 @@ function pollingData(usage){
   console.log(curr_date.toLocaleString() + " | " + usage.power);
   var spawn = require("child_process").spawn; 
       
-  var process = spawn('python',["/home/pi/unicorn-hat/examples/equalizer.py", usage.power]);
+  var process = spawn('python',["equalizer.py", usage.power]);
 }
 
 function eventData(event, data){
