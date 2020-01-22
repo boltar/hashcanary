@@ -44,9 +44,20 @@ function pollingData(usage){
     write_log(usage);
   }
   console.log(curr_date.toLocaleString() + " | " + usage.power);
-  var spawn = require("child_process").spawn; 
-      
-  var process = spawn('python',["equalizer.py", usage.power]);
+
+  const { exec } = require('child_process');
+  exec('sudo pkill python', (err, stdout, stderr) => {
+    if (err) {
+      //some err occurred
+      //console.error(err)
+    } else {
+    }
+    var spawn = require("child_process").spawn;
+    var process = spawn('python',["equalizer.py", usage.power]);
+
+  });
+
+
 }
 
 function eventData(event, data){
