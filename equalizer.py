@@ -23,17 +23,27 @@ sleep_interval = [0.04, 0.03, 0.02, 0.02, 0.01, 0.01, 0.01, 0.01, 0.01]
 
 
 
-max_voltage = 990
-min_voltage = 950
+max_voltage = 1000
+min_voltage = 900
 interval = (max_voltage - min_voltage) / u_width
-#print(float(sys.argv[1]))
-# displayed_width = int((float(sys.argv[1]) - min_voltage) / interval) + 1
-# if displayed_width > u_width:
-#     displayed_width = u_width
-#
-# if displayed_width < 0:
-#     displayed_width = 1
-displayed_width = 8
+print(float(sys.argv[1]))
+displayed_width = int((float(sys.argv[1]) - min_voltage) / interval) + 1
+if displayed_width > u_width:
+  displayed_width = u_width
+
+if displayed_width <= 0:
+  displayed_width = 1
+
+#print("displayed_width = %d" % displayed_width)
+#displayed_width = 8
+try:
+    sys.argv[2]
+    p_color = sys.argv[2]
+except IndexError:
+    p_color = "red"
+
+print("p_color=" + p_color)
+
 valid_colors = ["red", "green", "blue", "yellow", "cyan", "purple", "white"]
 color_vals = {"red": [1, 0, 0],
               "green": [0, 1, 0],
@@ -45,10 +55,11 @@ color_vals = {"red": [1, 0, 0],
 
 #print(os.environ["p_color"])
 #print("displayed_width %d" % displayed_width)
-try:
-    os.environ["p_color"]
-except KeyError:
-    p_color = "red"
+#try:
+#    os.environ["p_color"]
+#    p_color = os.environ["p_color"]
+#except KeyError:
+#    p_color = "red"
 
 if p_color not in valid_colors:
     print("p_color not valid, using default red")
@@ -56,37 +67,38 @@ if p_color not in valid_colors:
 #os._exit(0)
 
 def get_color2(level):
-    if level < 1 or level > 8:
+    if level < 0 or level > 8:
         print("level invalid %d" % level)
         level = 8
 
-    level = level - 1
+    #level = level - 1
     r, g, b = color_vals[p_color];
     return r * brightness[level], g * brightness[level], b * brightness[level]
 
 def show_level(level):
+#    print("show_level %d" % level)
     if level == 0:
         unicorn.clear()
         unicorn.show()
         return
 
-    for i in range(level+1):
-        r, g, b = get_color2(i+1)
+    for i in range(level):
+        r, g, b = get_color2(i)
         for y in range(u_height):
             unicorn.set_pixel(i, y, r, g, b)
 
-    for i in range(level+1, 9):
+    for i in range(level, 9):
         for y in range(u_height):
             unicorn.set_pixel(i, y, 0, 0, 0)
 
     unicorn.show()
 
 
-for level in range(displayed_width):
+for level in range(displayed_width+1):
     show_level(level)
     time.sleep(sleep_interval[level])
 
-for level in reversed(range(displayed_width)):
+for level in reversed(range(displayed_width+1)):
     show_level(level)
     time.sleep(sleep_interval[level])
 

@@ -53,7 +53,7 @@ function pollingData(usage){
     } else {
     }
     var spawn = require("child_process").spawn;
-    var process = spawn('python',["equalizer.py", usage.power]);
+    var python_process = spawn('python',["equalizer.py", usage.power, process.env.p_color]);
 
   });
 
